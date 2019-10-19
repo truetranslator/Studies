@@ -1,0 +1,48 @@
+package multidimentionalArraysPractice;
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class diagonalDifference {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int value = Integer.parseInt(scanner.nextLine());
+        int[][] matrix = new int[value][value];
+        for (int i = 0; i < value; i++) {
+            matrix[i] = Arrays.stream(scanner.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+        }
+
+        int mainDiagonal=getMainDiagonalSum(matrix);
+        int secondDiagonal=getSecondDiagonalSum(matrix, value);
+        int finalsum=0;
+        if (mainDiagonal>secondDiagonal){
+            finalsum=mainDiagonal-secondDiagonal;
+        }else finalsum=secondDiagonal-mainDiagonal;
+        System.out.println(finalsum);
+
+            }
+
+    private static int getSecondDiagonalSum(int[][] matrix, int value ) {
+        int sum=0;
+        int r=value-1, c=0;
+        while (r>=0 && c<matrix[r].length){
+            sum+=matrix[r--][c++];
+        }
+        return sum;
+    }
+
+    private static int getMainDiagonalSum(int[][] matrix) {
+        int sum=0;
+        int r=0, c=0;
+        while (r<matrix.length && c<matrix[r].length){
+            sum+=matrix[r++][c++];
+        }
+        return sum;
+    }
+
+
+}
+
+
+
+
