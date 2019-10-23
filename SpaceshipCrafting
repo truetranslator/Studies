@@ -1,0 +1,126 @@
+package ExamPreparation;
+
+import java.util.*;
+
+public class SpaceshipCrafting {public static void main(String[] args){
+    Scanner scanner=new Scanner(System.in);
+    int[] liquidsArray= Arrays.stream(scanner.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+    int[] itemsArray= Arrays.stream(scanner.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+    ArrayDeque<Integer> liquids=ParseQueue(liquidsArray);
+    ArrayDeque<Integer> items=ParseStack(itemsArray);
+    Map<String, Integer> advancedMaterials =new TreeMap<>();
+    advancedMaterials.put("Glass", 0);
+    advancedMaterials.put("Aluminium", 0);
+    advancedMaterials.put("Lithium", 0);
+    advancedMaterials.put("Carbon fiber", 0);
+    while (!(liquids.isEmpty() || items.isEmpty())){
+             int currentLiquid=liquids.poll();
+             int currentItem=items.pop();
+             int advancedMaterialSum=currentItem+currentLiquid;
+             String advancedMaterial=getAdvanceMaterial(advancedMaterialSum);
+             if (advancedMaterial==null){
+                items.push(currentItem + 3);
+             }else {
+                 advancedMaterials.put(advancedMaterial, advancedMaterials.get(advancedMaterial)+1);
+
+
+
+             }
+
+    }
+    if (advancedMaterials.entrySet().stream().allMatch(e ->e.getValue()>0)){
+        System.out.println("Wohoo! You succeeded in building the spaceship!");
+    }else {
+        System.out.println("Ugh, what a pity! You didn't have enough materials to build the spaceship.");
+    }
+   printLiquids(liquids);
+    printItems(items);
+    for (Map.Entry<String, Integer> entry :advancedMaterials.entrySet()) {
+        System.out.println(entry.getKey() + ": " + entry.getValue());}
+
+
+    }
+
+
+    private static void printItems(ArrayDeque<Integer> items) {
+        String itemsRes="Physical items left: ";
+        if (items.isEmpty()){
+            itemsRes += "none";
+        }else {
+            itemsRes+=joinStack(items);
+        }
+        System.out.println(itemsRes);
+    }
+
+    private static void printLiquids(ArrayDeque<Integer> liquids) {
+        String liquidRes="Liquids left: ";
+        if (liquids.isEmpty()){
+            liquidRes += "none";
+        }else {
+            liquidRes+=joinQueue(liquids);
+        }
+        System.out.println(liquidRes);
+    }
+
+    private static String joinStack(ArrayDeque<Integer> items) {
+        StringBuilder sb=new StringBuilder();
+        while (!items.isEmpty()){
+            sb.append(items.pop());
+            if (items.isEmpty()) {
+                break;
+            }
+            sb.append(", ");
+        }
+        return sb.toString().trim();
+    }
+
+    private static String joinQueue(ArrayDeque<Integer> liquids) {
+        StringBuilder sb=new StringBuilder();
+        while (!liquids.isEmpty()){
+            sb.append(liquids.poll());
+            if (liquids.isEmpty()) {
+                break;
+            }
+            sb.append(", ");
+        }
+    return sb.toString().trim();
+    }
+
+
+    private static String getAdvanceMaterial(int advancedMaterialSum) {
+    String advancedMaterial=null;
+        switch (advancedMaterialSum){
+            case 25:
+                advancedMaterial="Glass";
+                break;
+            case 50:
+                advancedMaterial="Aluminium";
+                break;
+            case 75:
+                advancedMaterial="Lithium";
+                break;
+            case 100:
+                advancedMaterial="Carbon fiber";
+                break;
+        }
+        return advancedMaterial;
+    }
+
+    private static ArrayDeque<Integer> ParseStack(int[] itemsArray) {
+    ArrayDeque<Integer> stack=new ArrayDeque<>();
+        for (int element:itemsArray) {
+        stack.push(element);
+        }
+    return stack;
+    }
+
+    private static ArrayDeque<Integer> ParseQueue(int[] liquidsArray) {
+    ArrayDeque<Integer> queue=new ArrayDeque<>();
+        for (int element:liquidsArray) {
+            queue.offer(element);
+            
+        }
+        return queue;
+    }
+
+}
