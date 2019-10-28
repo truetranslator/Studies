@@ -1,0 +1,37 @@
+package SetsandMapsAdvanced;
+
+import java.util.Scanner;
+import java.util.TreeSet;
+
+public class SoftUniParty {
+    public static void main(String[]args){
+        Scanner scanner=new Scanner(System.in);
+        TreeSet<String> regularGuest=new TreeSet<>();
+        TreeSet<String> vipGuest=new TreeSet<>();
+        String command=scanner.nextLine();
+        int size=0;
+        while (!command.equals("PARTY")){
+            if (Character.isDigit(command.charAt(0))){
+                vipGuest.add(command);
+            }else regularGuest.add(command);
+            command=scanner.nextLine();
+        }while (!command.equals("END")){
+            if (regularGuest.contains(command)){
+                regularGuest.remove(command);
+            }else if(vipGuest.contains(command)){
+                vipGuest.remove(command);
+            }
+            command=scanner.nextLine();
+        }
+        size=vipGuest.size()+regularGuest.size();
+        System.out.println(size);
+        for (String vipguests:vipGuest) {
+            System.out.println(vipguests);
+
+        }
+        for (String regularGuests:regularGuest) {
+            System.out.println(regularGuests);
+
+        }
+}}
+
